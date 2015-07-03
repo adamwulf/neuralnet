@@ -27,7 +27,7 @@ int main()
     d.setCreationApproach( STATIC, 10 );
     
     //create neural network
-    neuralNetwork nn(26,10,13);
+    neuralNetwork nn(16,10,3);
     
     //create neural network trainer
     neuralNetworkTrainer nT( &nn );
@@ -46,5 +46,4 @@ int main()
     nn.saveWeights((char*)outputName);
     
     cout << endl << endl << "-- END OF PROGRAM --" << endl;
-    char c; cin >> c;
 }
