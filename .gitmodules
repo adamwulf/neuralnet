@@ -1,0 +1,3 @@
+[submodule "submodules/ycmatrix"]
+	path = submodules/ycmatrix
+	url = git@github.com:yconst/YCMatrix.git
