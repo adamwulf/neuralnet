@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
+#import <Accelerate/Accelerate.h>
 #include "randn.h"
 
 // port of http://cs231n.github.io/neural-networks-case-study/
@@ -40,8 +41,8 @@ NSImage* plot(CGFloat* data, int count, int classes){
     for(int k=0;k<classes;k++){
         [randomColor() setFill];
         for (int i=k*count; i<(k+1)*count; i++) {
-            CGFloat x = data[i*2+0] * size.width/2 + size.width/2;
-            CGFloat y = data[i*2+1] * size.height/2 + size.height/2;
+            CGFloat x = data[i+0] * size.width/2 + size.width/2;
+            CGFloat y = data[i+classes*count] * size.height/2 + size.height/2;
             [[NSBezierPath bezierPathWithOvalInRect:NSMakeRect(x-2, y-2, 4, 4)] fill];
         }
     }
@@ -54,14 +55,20 @@ NSImage* plot(CGFloat* data, int count, int classes){
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
-        // insert code here...
+        // http://cs231n.github.io/neural-networks-case-study/
         
+        //Generating some data
         
         const NSUInteger N  = 100; // number of data points
         const NSUInteger D = 2;
         const NSUInteger K = 3;
         
-        CGFloat X[N*K][D];
+        // X = [[rx, rx, rx, bx, bx, bx, gx, gx, gx],
+        //      [ry, ry, ry, by, by, by, gy, gy, gy]];
+        //
+        
+        
+        CGFloat X[D][N*K];
         NSUInteger y[N*K];
 
         for(int k=0;k<K;k++){
@@ -72,16 +79,17 @@ int main(int argc, const char * argv[]) {
                     CGFloat t = linspaceat(k*4,(k+1)*4,N,n)+randn(0, .2);
                     if(d == 0){
                         CGFloat foo = r * sin(t);
-                        X[ix][d] = foo;
+                        X[d][ix] = foo;
                     }else{
                         CGFloat foo = r * cos(t);
-                        X[ix][d] = foo;
+                        X[d][ix] = foo;
                     }
                     y[ix] = k;
                 }
             }
         }
         
+        // save image to verify
         
         NSString* path = @"/Users/adam/Screenshots/foo.png";
         NSImage* image = plot((CGFloat*)X, N, K);
@@ -91,6 +99,37 @@ int main(int argc, const char * argv[]) {
         
         [[bitmapRep representationUsingType:NSPNGFileType properties:Nil] writeToFile:path atomically:YES];
         
+        
+        
+        // Training a Softmax Linear Classifier
+        // Initialize the parameters
+        
+        // W = [[ rx, bx, gx ],
+        //      [ ry, by, gy ]];
+        
+        CGFloat W[D][K];
+        CGFloat b[1][K] = {0};
+        
+        for(int d=0;d<D;d++){
+            for(int k=0;k<K;k++){
+                W[d][k] = randn(0, .01);
+            }
+        }
+        
+        CGFloat scores[300][3];
+        
+        vDSP_dotpr(X, 1, W, 1, scores, N*K);
+        
+        
+        for(int k=0;k<K;k++){
+            for(int n=0;n<N;n++){
+                NSLog(@"(%d %d)=%f", k, n, scores[n][k]);
+            }
+        }
+        
+        
     }
     return 0;
 }
+
+CGFloat dotProduct(CGFloat[300] X, CGFloat[300]W)
