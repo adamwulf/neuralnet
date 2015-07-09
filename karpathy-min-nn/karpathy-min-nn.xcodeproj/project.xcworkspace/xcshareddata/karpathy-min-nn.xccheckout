@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>89B03ACD-C3CB-4D0A-B782-C7C0269BC68A</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>karpathy-min-nn</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>E35B4317A110B037077954C1268B06E70B754FD7</key>
 		<string>github.com:adamwulf/neuralnet.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>karpathy-min-nn/karpathy-min-nn.xcodeproj/project.xcworkspace</string>
+	<string>karpathy-min-nn/karpathy-min-nn.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>E35B4317A110B037077954C1268B06E70B754FD7</key>
